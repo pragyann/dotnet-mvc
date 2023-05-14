@@ -1,0 +1,64 @@
+﻿@using dotnet_mvc.Models
+@model SignupModel
+
+<center>
+    <form method="post"
+          asp-action="Signup"
+          asp-controller="auth"
+          onsubmit="this.submit(); this.reset(); return false;"
+          style="width: 500px; margin-top: 50px; margin-bottom: 100px; border: 0.5px solid lightgrey; padding: 20px; border-radius: 10px">
+      <h3 class="colored-text">Get started</h3>
+      <br/>
+        <!-- First Name input -->
+        <div class="input-container">
+            <label >First Name</label>
+            <input asp-for="FirstName"  class="input" />
+            <span asp-validation-for="FirstName" class="input-error"></span>
+        </div>
+
+        <!-- Last Name input -->
+        <div class="input-container">
+            <label >Last Name</label>
+            <input asp-for="LastName"  class= "input"/>
+            <span asp-validation-for="LastName" class="input-error"></span>
+        </div>
+
+        <!-- Phone number input -->
+        <div class="input-container">
+            <label >Phone number</label>
+            <input asp-for="Phone" class="input" />
+            <span asp-validation-for="Phone" class="input-error"></span>
+        </div>
+
+        <!-- Address input -->
+        <div class="input-container">
+            <label >Address</label>
+            <input asp-for="Address" class="input" />
+            <span asp-validation-for="Address" class="input-error"></span>
+        </div>
+
+        <!-- Email input -->
+        <div class="input-container">
+            <label  >Email</label>
+            <input asp-for="Email"  class="input" />
+            <span asp-validation-for="Email" class="input-error"></span>
+        </div>
+
+        <!-- Password input -->
+        <div class="input-container ">
+            <label  >Password</label>
+            <input asp-for="Password"  class="input" />
+            <span asp-validation-for="Password" class="input-error"></span>
+        </div>
+
+        <!-- Repeat Password input -->
+        <div class="input-container">
+            <label  for="registerRepeatPassword">Confirm password</label>
+            <input asp-for="ConfirmPassword"class="input" />
+            <span asp-validation-for="ConfirmPassword" class="input-error"></span>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn button btn-block mb-3" style="margin-top: 20px">Sign up</button>
+    </form>
+</center>

@@ -1,0 +1,15 @@
+﻿@{
+    string email = ViewBag.Email;
+    string password = ViewBag.Password;
+
+    if(email!=null && password != null)
+    {
+        <h1>Logged in with:</h1>
+        <h4>@email</h4>
+        <h4>@password</h4>
+    }
+    else
+    {
+        <h1>Not logged in</h1>
+    }
+}

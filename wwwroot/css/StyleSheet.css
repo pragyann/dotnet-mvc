@@ -1,0 +1,45 @@
+﻿
+.button{
+    background-color: coral;
+    color: white;
+}
+
+.button:hover {
+    background-color: orangered;
+    color: white;
+}
+
+.colored-text{
+    color: coral;
+}
+
+.colored-text:hover{
+    color: coral;
+}
+
+.input{
+    border-radius: 10px;
+    height: 40px;
+    padding: 0px 10px;
+    border: 1px solid lightgrey;
+}
+
+.input-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+label{
+    align-self: flex-start;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.input-error{
+    margin-top: 2px;
+    color: red;
+    font-size: 12px;
+    align-self: flex-start
+}

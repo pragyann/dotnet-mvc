@@ -1,0 +1,56 @@
+﻿@using dotnet_mvc.Models
+@model LoginModel
+
+<center>    
+    <form 
+        method="post" 
+        asp-action="Login" 
+        asp-controller="auth" 
+        onsubmit="this.submit(); this.reset(); return false;" 
+        style="width: 400px; margin-top: 50px; border: 0.5px solid lightgrey; padding: 20px; border-radius: 10px"
+    >
+        <h3 class="colored-text">Login</h3>
+        <br />
+        <!-- Email input -->
+        <div class="input-container">
+            <label>Email</label>
+            <input asp-for="Email" class="input" />
+            <span asp-validation-for="Email" class="input-error"></span>
+        </div>
+
+        <!-- Password input -->
+        <div class="input-container ">
+            <label>Password</label>
+            <input asp-for="Password" class="input" />
+            <span asp-validation-for="Password" class="input-error"></span>
+        </div>
+
+        <!-- 2 column grid layout for inline styling -->
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+                <!-- Checkbox -->
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+                    <label class="form-check-label" for="form2Example31"> Remember me </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <!-- Simple link -->
+                <a href="#!" class="colored-text">Forgot password?</a>
+            </div>
+
+            <span asp-validation-for="LoginError" class="input-error" style="margin-top: 20px"></span>
+        </div>
+
+
+        <!-- Submit button -->
+        <button type="submit" class="btn button btn-block mb-4">Log in</button>
+
+        <!-- Register buttons -->
+        <div class="text-center">
+            <p>Not a member? <a class="colored-text" asp-controller="auth" asp-action="Signup">Register</a></p>
+           
+        </div>
+    </form>
+</center>
