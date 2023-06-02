@@ -16,7 +16,7 @@ namespace dotnet_mvc.Services
             var users = this._db.Users.Where(x => x.Email == email).ToList();
             if(users.Count == 0)
             {
-                throw new SystemException("User not found");
+                return null;
             }
             return users.First();
             
@@ -24,7 +24,8 @@ namespace dotnet_mvc.Services
 
         public void create(UserModel userModel)
         {
-           this._db.Users.Add(userModel);
+            this._db.Users.Add(userModel);
+            this._db.SaveChanges();
         }
 	}
 }

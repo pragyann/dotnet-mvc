@@ -76,6 +76,7 @@ namespace dotnet_mvc.Services
                 Phone = signupModel.Phone
             };
             this._userService.create(userModel);
+            Console.WriteLine(userModel);
         }
 	}
 }
