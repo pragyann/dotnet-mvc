@@ -4,11 +4,18 @@ using System.Data.SqlClient;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.SqlServer.Server;
 using Microsoft.AspNetCore.Hosting.Server;
+using dotnet_mvc.Services;
 
 namespace dotnet_mvc.Controllers
 {
     public class AuthController : Controller
     {
+        private AuthService _authService;
+
+        public AuthController(AuthService authService) {
+            this._authService = authService;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -26,39 +33,18 @@ namespace dotnet_mvc.Controllers
         {
             if(ModelState.IsValid)
             {
-                string connectionConfig = "Server = localhost; Database = dotnet_mvc; Integrated Security = True; ";
-                SqlConnection conn = new(connectionConfig);
-                string sql = "SELECT * FROM users WHERE email=@Email";
-                SqlCommand cmd = new(sql, conn);
-        
-                cmd.Parameters.AddWithValue("@Email", loginModel.Email);  
-
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                if (!reader.HasRows)
+                try
                 {
-                    ModelState.AddModelError("LoginError", "Invalid Credentials. Please try again.");
-                    return View();
+                    var accessToken = this._authService.Login(loginModel);
+                    Response.Cookies.Append("accessToken", accessToken);
+
+                    return RedirectToAction("Index", "Home");
+
                 }
-
-                string hashedPassword = reader.GetFieldValue<string>(3);
-                conn.Close();
-
-                PasswordHasher<string> passwordHasher = new();
-                PasswordVerificationResult passwordVerificationResult = passwordHasher.VerifyHashedPassword(loginModel.Email, hashedPassword, loginModel.Password);
-
-                if (passwordVerificationResult == PasswordVerificationResult.Success)
+                catch(SystemException e)
                 {
-                    string email = loginModel.Email;
-                    string password = loginModel.Password;
-                    return RedirectToAction("Index", "Home", new { email, password });
-                }
-                else
-                {
-                    ModelState.AddModelError("LoginError", "Invalid Credentials. Please try again.");
-                }                          
+                    ModelState.AddModelError("LoginError", e.Message);
+                }                     
             }
             return View();
         }
@@ -68,32 +54,14 @@ namespace dotnet_mvc.Controllers
         {
             if(ModelState.IsValid)
             {
-                //string connectionConfig = "Data Source=(local);uid=sa;pwd=sql;Initial Catalog=test";
-                string connectionConfig = "Server = localhost; Database = dotnet_mvc; Integrated Security = True; ";
-
-                SqlConnection conn = new (connectionConfig);
-                string sql = "INSERT INTO users values(@FirstName, @LastName, @Email, @Password, @Phone, @Address)";
-                SqlCommand cmd = new (sql, conn);
-
-                PasswordHasher<string> passwordHasher = new();
-
-                string hashedPassword = passwordHasher.HashPassword(signupModel.Email, signupModel.Password);
-                
-                cmd.Parameters.AddWithValue("@FirstName", signupModel.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", signupModel.LastName);
-                cmd.Parameters.AddWithValue("@Email", signupModel.Email);
-                cmd.Parameters.AddWithValue("@Password", hashedPassword);
-                cmd.Parameters.AddWithValue("@Phone", signupModel.Phone);
-                cmd.Parameters.AddWithValue("@Address", signupModel.Address);
-
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
-
-                string email = signupModel.Email;
-                string password = signupModel.Password;
-
-                return RedirectToAction("Index", "Home", new { email, password });
+                try {
+                    this._authService.Signup(signupModel);
+                    return RedirectToAction("Login", "Auth");
+                }
+                catch(SystemException e)
+                {
+                    ModelState.AddModelError("SignupError", e.Message);
+                }
 
             }
             return View();
