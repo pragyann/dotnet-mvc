@@ -31,5 +31,7 @@ namespace dotnet_mvc.Models
 
         [Required(ErrorMessage = "Address is required")]
         public string Address { get; set; } = string.Empty;
+
+        public string SignupError { get; set; } = "";
     }
 }

@@ -4,15 +4,15 @@ namespace dotnet_mvc.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController() { }
+
         [Route("/")]
-        public IActionResult Index(string email,string password)
-        {   
-            
-            if(email!=null && password != null)
-            {
-                ViewBag.Email = email;
-                ViewBag.Password = password;
-            }   
+        public IActionResult Index()
+        {
+            var accessToken = Request.Cookies["accessToken"];
+
+            ViewBag.accessToken = accessToken;
+
             return View();
         }
 
